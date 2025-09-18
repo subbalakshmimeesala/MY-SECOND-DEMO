@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Workout Posture Detection</title>
+  <style>
+    /* Reset and global styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fc;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    
+    /* Dashboard container */
+    .dashboard {
+      width: 80%;
+      max-width: 1200px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    h1 {
+      color: #333;
+    }
+    
+    /* Posture Status section */
+    .posture-status {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .posture-card {
+      width: 48%;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #e1f7d5;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .posture-card h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .posture-card p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    /* Data visualization */
+    .chart-container {
+      width: 100%;
+      height: 400px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Button style */
+    .btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard">
+    <div class="header">
+      <h1>Smart Workout Posture Detection</h1>
+      <p>Track your workout posture and receive real-time feedback for improvement.</p>
+    </div>
+    
+    <!-- Posture Status -->
+    <div class="posture-status">
+      <div class="posture-card">
+        <h2>Current Posture</h2>
+        <p id="posture-status">Good</p>
+      </div>
+      <div class="posture-card">
+        <h2>Feedback</h2>
+        <p id="posture-feedback">Keep your back straight!</p>
+      </div>
+    </div>
+
+    <!-- Visualization Chart (Placeholder) -->
+    <div class="chart-container" id="chart-container">
+      <canvas id="workout-chart"></canvas>
+    </div>
+    
+    <button class="btn" onclick="simulatePostureChange()">Simulate Posture Change</button>
+  </div>
+
+  <!-- Include Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    // Simulating the posture data and feedback changes
+    let currentPosture = "Good";
+    let currentFeedback = "Keep your back straight!";
+    
+    const postureStatuses = ["Good", "Bad", "Neutral"];
+    const feedbacks = [
+      "Keep your back straight!",
+      "Adjust your legs!",
+      "Straighten your shoulders!"
+    ];
+
+    // Setup for Chart.js
+    const ctx = document.getElementById('workout-chart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['0', '1', '2', '3', '4', '5'],
+        datasets: [{
+          label: 'Posture Quality',
+          data: [5, 4, 3, 4, 5, 3],  // Dummy posture data (replace with real data)
+          borderColor: 'rgb(75, 192, 192)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 5
+          }
+        }
+      }
+    });
+
+    // Function to simulate a posture change and update feedback
+    function simulatePostureChange() {
+      const randomIndex = Math.floor(Math.random() * 3);  // Random posture state
+      currentPosture = postureStatuses[randomIndex];
+      currentFeedback = feedbacks[randomIndex];
+      
+      // Update the HTML elements
+      document.getElementById('posture-status').textContent = currentPosture;
+      document.getElementById('posture-feedback').textContent = currentFeedback;
+
+      // Simulate chart data update
+      chart.data.datasets[0].data.push(Math.floor(Math.random() * 5) + 1);
+      chart.data.labels.push(chart.data.labels.length);
+      chart.update();
+    }
+  </script>
+</body>
+</html>
